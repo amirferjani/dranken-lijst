@@ -1,5 +1,9 @@
 # Frigo AI – dranken-lijst
 
+**Code is klaar.** Open op je iPhone: [Vercel – New Project](https://vercel.com/new), kies **Import Git Repository** en selecteer `amirferjani/dranken-lijst`.
+
+> Gebruik niet de API-key die in een chat is gedeeld. Trek die in, maak een nieuwe projectkey aan en vul uitsluitend die nieuwe key in als Vercel Environment Variable `OPENAI_API_KEY`.
+
 Mobiele webapp voor cafévoorraad:
 
 - Neem 1–20 foto's van dezelfde frigo op een iPhone.
@@ -16,25 +20,34 @@ Mobiele webapp voor cafévoorraad:
 - IP: `192.168.0.36`
 - PassPRNT-port: `TCP:192.168.0.36`
 - Printbreedte: 576 dots / ongeveer 72 mm
+- Snijmethode: partial cut
 
 ## Veiligheid
 
-De OpenAI API-key hoort **nooit** in `index.html`, `app.js`, GitHub of de mobiele browser. De app gebruikt daarom een serverless API-route (`/api/analyze`) en leest de key alleen uit de servervariabele `OPENAI_API_KEY`.
+De OpenAI API-key staat **nooit** in `index.html`, `app.js`, GitHub of de mobiele browser. De app gebruikt een serverless API-route (`/api/analyze`) en leest de sleutel alleen uit de servervariabele `OPENAI_API_KEY`.
 
 Een API-key die ooit in een chat, screenshot of openbaar bestand is gedeeld, moet worden ingetrokken en vervangen.
 
 ## Online zetten met Vercel
 
-1. Meld aan bij Vercel met GitHub en importeer `amirferjani/dranken-lijst`.
+1. Open [Vercel – New Project](https://vercel.com/new), meld aan met GitHub en importeer `amirferjani/dranken-lijst`.
 2. Voeg vóór **Deploy** bij **Environment Variables** toe:
-   - `OPENAI_API_KEY` = een nieuwe OpenAI-projectkey
+   - `OPENAI_API_KEY` = een **nieuwe** OpenAI-projectkey
+   - `APP_PIN` = een eigen toegangscode, bijvoorbeeld een code die alleen het personeel kent
    - optioneel `OPENAI_MODEL` = `gpt-5-mini`
-   - aanbevolen `APP_PIN` = een eigen toegangscode
-3. Druk op **Deploy**. Vercel bouwt de statische mobiele pagina en de beveiligde `/api/analyze`-route.
+3. Druk op **Deploy**. Vercel bouwt de mobiele pagina en de beveiligde `/api/analyze`-route.
 4. Open de Vercel-link op de iPhone.
-5. Bij gebruik van `APP_PIN`: vul dezelfde code in onder **Instellingen**.
-6. Open in Safari → Deel → **Zet op beginscherm**.
-7. Installeer/open Star PassPRNT en selecteer de printer op `192.168.0.36`.
+5. Vul onder **Instellingen** exact dezelfde `APP_PIN` in.
+6. Open Safari → Deel → **Zet op beginscherm**.
+7. Installeer/open Star PassPRNT. De webapp stuurt naar `TCP:192.168.0.36`; selecteer die printer één keer wanneer PassPRNT daarom vraagt.
+
+## Eerste gebruik
+
+1. Open **Frigo instellen**.
+2. Geef de frigo een naam en fotografeer een volledig gevulde of gewenste frigo vanuit meerdere hoeken.
+3. Laat AI de producten ontdekken, controleer de aantallen en sla de frigo op.
+4. Open later **Controleren**, neem nieuwe foto's en druk op **Analyseren**.
+5. Corrigeer eventueel onzekere aantallen en druk op **Print op Star TSP100**.
 
 ## Lokaal testen
 
@@ -49,7 +62,7 @@ Maak lokaal een `.env.local`:
 ```env
 OPENAI_API_KEY=sk-proj-...
 OPENAI_MODEL=gpt-5-mini
-APP_PIN=
+APP_PIN=je-eigen-code
 ```
 
 ## Waarom eerst een volle frigo instellen?
@@ -65,7 +78,6 @@ AI kan geen volledig verborgen fles tellen. Voor de beste resultaten:
 - zorg dat doppen en etiketten zichtbaar zijn;
 - vermijd sterke flitsreflecties;
 - controleer regels met een lage zekerheid vóór het printen.
-
 
 ## Wat bewust niet in GitHub staat
 
