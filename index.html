@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1748b3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Frigo AI">
+  <meta name="description" content="Controleer caféfrigo's met AI en print een aanvulticket op een Star TSP100IIILAN.">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Frigo AI</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">CAFÉ DE ZOO</p>
+        <h1>Frigo AI</h1>
+      </div>
+      <div class="status-pill" id="serverStatus"><span class="dot"></span><span>Controleren…</span></div>
+    </header>
+
+    <nav class="tabs" aria-label="Hoofdnavigatie">
+      <button class="tab active" data-tab="check">Controleren</button>
+      <button class="tab" data-tab="setup">Frigo instellen</button>
+      <button class="tab" data-tab="settings">Instellingen</button>
+    </nav>
+
+    <main>
+      <section class="panel active" id="panel-check">
+        <div class="card hero-card">
+          <div>
+            <p class="step">STAP 1</p>
+            <h2>Kies de frigo</h2>
+          </div>
+          <select id="checkFridgeSelect" aria-label="Frigo kiezen"></select>
+          <p class="hint" id="checkFridgeHint"></p>
+        </div>
+
+        <div class="card">
+          <p class="step">STAP 2</p>
+          <h2>Neem foto’s</h2>
+          <p class="muted">Maak overlappende foto’s van elk rek: links, midden en rechts. De app voorkomt zo veel mogelijk dubbeltellingen.</p>
+          <div class="photo-actions">
+            <label class="button primary camera-button">
+              <input id="checkCameraInput" type="file" accept="image/*" capture="environment">
+              Maak een foto
+            </label>
+            <label class="button secondary">
+              <input id="checkLibraryInput" type="file" accept="image/*" multiple>
+              Kies meerdere foto’s
+            </label>
+          </div>
+          <div class="photo-summary" id="checkPhotoSummary">Nog geen foto’s gekozen.</div>
+          <div class="photo-grid" id="checkPhotoGrid"></div>
+          <button class="button danger ghost hidden" id="clearCheckPhotos">Alle foto’s verwijderen</button>
+        </div>
+
+        <div class="card action-card">
+          <p class="step">STAP 3</p>
+          <button class="button primary large" id="analyzeCheck">Analyseer voorraad met AI</button>
+          <p class="microcopy">Foto’s worden verkleind op je gsm en alleen tijdens de analyse doorgestuurd.</p>
+        </div>
+
+        <section id="checkResult" class="hidden"></section>
+      </section>
+
+      <section class="panel" id="panel-setup">
+        <div class="card">
+          <p class="step">VOLLE FRIGO AANLEREN</p>
+          <h2>Maak één keer de doelvoorraad</h2>
+          <p class="muted">Vul de frigo zoals ze normaal hoort te staan, neem meerdere foto’s en laat AI de merken en aantallen herkennen. Je kunt alles corrigeren voor je opslaat.</p>
+
+          <label class="field-label" for="setupFridgeSelect">Bestaande frigo aanpassen of nieuwe maken</label>
+          <select id="setupFridgeSelect"></select>
+
+          <label class="field-label" for="setupFridgeName">Naam van de frigo</label>
+          <input id="setupFridgeName" type="text" maxlength="100" placeholder="Bijvoorbeeld: Barfrigo links">
+
+          <div class="photo-actions">
+            <label class="button primary camera-button">
+              <input id="setupCameraInput" type="file" accept="image/*" capture="environment">
+              Maak een foto
+            </label>
+            <label class="button secondary">
+              <input id="setupLibraryInput" type="file" accept="image/*" multiple>
+              Kies meerdere foto’s
+            </label>
+          </div>
+          <div class="photo-summary" id="setupPhotoSummary">Nog geen kalibratiefoto’s gekozen.</div>
+          <div class="photo-grid" id="setupPhotoGrid"></div>
+          <button class="button primary large" id="discoverProducts">Herken volle frigo met AI</button>
+        </div>
+
+        <div class="card" id="setupProductsCard">
+          <div class="row-between">
+            <div>
+              <p class="step">DOELVOORRAAD</p>
+              <h2>Producten en aantallen</h2>
+            </div>
+            <button class="button small secondary" id="addProduct">+ Product</button>
+          </div>
+          <div id="setupProductsList" class="product-editor"></div>
+          <button class="button primary large" id="saveFridge">Frigo opslaan</button>
+          <button class="button danger ghost" id="deleteFridge">Frigo verwijderen</button>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-settings">
+        <div class="card">
+          <p class="step">PRINTER</p>
+          <h2>Star TSP100IIILAN</h2>
+          <div class="info-box success-box">
+            <strong>Gevonden printer</strong>
+            <span>LAN · 192.168.0.36 · TSP100IIILAN</span>
+          </div>
+          <label class="field-label" for="printerIp">IP-adres</label>
+          <input id="printerIp" inputmode="decimal" value="192.168.0.36">
+          <label class="toggle-row">
+            <input id="usePrinterIp" type="checkbox" checked>
+            <span>Rechtstreeks deze LAN-printer gebruiken</span>
+          </label>
+          <button class="button primary" id="testPrinter">Print testticket</button>
+          <p class="hint">Hiervoor moet de gratis Star PassPRNT-app op je iPhone staan en de printer op hetzelfde netwerk zitten.</p>
+        </div>
+
+        <div class="card">
+          <p class="step">TOEGANG</p>
+          <h2>App-toegangscode</h2>
+          <label class="field-label" for="appPin">Alleen nodig wanneer APP_PIN op de server is ingesteld</label>
+          <input id="appPin" type="password" autocomplete="current-password" placeholder="Toegangscode">
+          <button class="button secondary" id="savePin">Code op dit toestel bewaren</button>
+        </div>
+
+        <div class="card">
+          <p class="step">BACK-UP</p>
+          <h2>Frigo-instellingen</h2>
+          <div class="button-stack">
+            <button class="button secondary" id="exportConfig">Exporteer back-up</button>
+            <label class="button secondary">
+              <input id="importConfig" type="file" accept="application/json">
+              Importeer back-up
+            </label>
+            <button class="button danger ghost" id="resetApp">Wis alle lokale gegevens</button>
+          </div>
+        </div>
+
+        <div class="card install-card">
+          <p class="step">IPHONE</p>
+          <h2>Zet op je beginscherm</h2>
+          <p class="muted">Open in Safari, druk op <strong>Deel</strong> en kies <strong>Zet op beginscherm</strong>. Daarna werkt het als een app.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="busyModal" role="dialog" aria-modal="true" aria-live="polite">
+    <div class="modal-card">
+      <div class="spinner"></div>
+      <h2 id="busyTitle">Foto’s voorbereiden…</h2>
+      <p id="busyText">Even geduld.</p>
+      <div class="progress"><div id="busyProgress"></div></div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
