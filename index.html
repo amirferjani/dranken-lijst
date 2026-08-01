@@ -10,7 +10,7 @@
   <meta name="description" content="Controleer caféfrigo's met AI en print een aanvulticket op een Star TSP100IIILAN.">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/icon-192.png">
   <link rel="stylesheet" href="/styles.css">
   <title>Frigo AI</title>
 </head>
@@ -74,6 +74,7 @@
           <p class="step">VOLLE FRIGO AANLEREN</p>
           <h2>Maak één keer de doelvoorraad</h2>
           <p class="muted">Vul de frigo zoals ze normaal hoort te staan, neem meerdere foto’s en laat AI de merken en aantallen herkennen. Je kunt alles corrigeren voor je opslaat.</p>
+          <div class="catalog-status" id="catalogStatus" role="status">Kassalijst laden…</div>
 
           <label class="field-label" for="setupFridgeSelect">Bestaande frigo aanpassen of nieuwe maken</label>
           <select id="setupFridgeSelect"></select>
@@ -93,7 +94,7 @@
           </div>
           <div class="photo-summary" id="setupPhotoSummary">Nog geen kalibratiefoto’s gekozen.</div>
           <div class="photo-grid" id="setupPhotoGrid"></div>
-          <button class="button primary large" id="discoverProducts">Herken volle frigo met AI</button>
+          <button class="button primary large" id="discoverProducts" disabled>Herken volle frigo met AI</button>
         </div>
 
         <div class="card" id="setupProductsCard">
@@ -105,6 +106,7 @@
             <button class="button small secondary" id="addProduct">+ Product</button>
           </div>
           <div id="setupProductsList" class="product-editor"></div>
+          <div id="setupAnalysisNotes" class="analysis-notes hidden"></div>
           <button class="button primary large" id="saveFridge">Frigo opslaan</button>
           <button class="button danger ghost" id="deleteFridge">Frigo verwijderen</button>
         </div>
@@ -131,8 +133,8 @@
         <div class="card">
           <p class="step">TOEGANG</p>
           <h2>App-toegangscode</h2>
-          <label class="field-label" for="appPin">Alleen nodig wanneer APP_PIN op de server is ingesteld</label>
-          <input id="appPin" type="password" autocomplete="current-password" placeholder="Toegangscode">
+          <label class="field-label" for="appPin">Personeelscode voor de beveiligde AI-server</label>
+          <input id="appPin" type="password" minlength="12" maxlength="200" autocomplete="current-password" placeholder="Minstens 12 tekens">
           <button class="button secondary" id="savePin">Code op dit toestel bewaren</button>
         </div>
 
@@ -168,6 +170,7 @@
   </div>
 
   <div class="toast hidden" id="toast"></div>
+  <datalist id="catalogProductNames"></datalist>
   <script type="module" src="/app.js"></script>
 </body>
 </html>
