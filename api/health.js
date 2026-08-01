@@ -5,9 +5,11 @@ export default function handler(req, res) {
   }
 
   res.setHeader("Cache-Control", "no-store");
+  const hasApiKey = Boolean(String(process.env.OPENAI_API_KEY || "").trim());
+  const hasAppPin = String(process.env.APP_PIN || "").trim().length >= 12;
   return res.status(200).json({
     ok: true,
-    configured: Boolean(process.env.OPENAI_API_KEY),
-    model: process.env.OPENAI_MODEL || "gpt-5-mini"
+    configured: hasApiKey && hasAppPin,
+    requiresPin: true
   });
 }

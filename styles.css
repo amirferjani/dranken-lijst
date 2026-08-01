@@ -175,6 +175,14 @@ select:focus, input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgb
 .product-edit-row input { min-height: 44px; }
 .remove-product { width: 38px; height: 38px; border: 0; border-radius: 10px; background: var(--red-soft); color: var(--red); font-weight: 900; }
 .empty-state { padding: 18px; border: 1px dashed #cbd5e1; border-radius: 12px; color: var(--muted); text-align: center; }
+.catalog-status { margin: 0 0 14px; padding: 10px 12px; border-radius: 11px; background: #f6f8fb; color: var(--muted); font-size: .82rem; line-height: 1.35; }
+.catalog-status.ok { background: var(--green-soft); color: #05634d; }
+.catalog-status.bad { background: var(--red-soft); color: var(--red); }
+.analysis-notes { display: grid; gap: 9px; margin-top: 12px; }
+.analysis-note { padding: 12px; border-radius: 11px; background: var(--amber-soft); color: #714900; font-size: .83rem; line-height: 1.4; }
+.analysis-note ul { margin: 7px 0 0; padding-left: 20px; }
+.unknown-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 9px; }
+.unknown-row + .unknown-row { border-top: 1px solid rgba(155, 99, 0, .18); margin-top: 9px; }
 
 .result-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .result-time { color: var(--muted); font-size: .76rem; }
